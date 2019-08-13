@@ -18,13 +18,13 @@ Download Repository [SpoonTools](https://github.com/princerayz/SpoonTools.git) A
 - Newtonsoft.Json
 
 ## Features
-> Send Tap Love For LIVE Stream, Cast.<br>
-> Report LIVE Stream, Cast, User.<br>
-> Increase Cast Listener (1 Listener = 3x Listener Spoon)
-> Add Fans User/<br>
-> Batch Load and Get Authentication ID.<br>
-> Profile Editor, Like Name Change, and Password Change.
-> Application Thread Handler.
+- Send Tap Love For LIVE Stream, Cast.
+- Report LIVE Stream, Cast, User.
+- Increase Cast Listener (1 Listener = 3x Listener Spoon *NO NEED AUTH ID, JUST INPUT CAST ID*)
+- Auto Fans User
+- Batch Load and Get Authentication ID.
+- Profile Editor, Name, Profile Pictures, and Password Change.
+- Application Thread Handler.
 
 ## Instruction To Add Server
 ```vbnet
