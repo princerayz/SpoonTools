@@ -1,0 +1,15 @@
+F:\Documents\GitHub\SpoonTools\SpoonTools\bin\Debug\SpoonTools.exe.config
+F:\Documents\GitHub\SpoonTools\SpoonTools\bin\Debug\SpoonTools.exe
+F:\Documents\GitHub\SpoonTools\SpoonTools\bin\Debug\SpoonTools.pdb
+F:\Documents\GitHub\SpoonTools\SpoonTools\bin\Debug\SpoonTools.xml
+F:\Documents\GitHub\SpoonTools\SpoonTools\bin\Debug\Newtonsoft.Json.dll
+F:\Documents\GitHub\SpoonTools\SpoonTools\bin\Debug\System.Net.Http.Formatting.dll
+F:\Documents\GitHub\SpoonTools\SpoonTools\bin\Debug\Newtonsoft.Json.xml
+F:\Documents\GitHub\SpoonTools\SpoonTools\bin\Debug\System.Net.Http.Formatting.xml
+F:\Documents\GitHub\SpoonTools\SpoonTools\obj\Debug\SpoonTools.Form1.resources
+F:\Documents\GitHub\SpoonTools\SpoonTools\obj\Debug\SpoonTools.Resources.resources
+F:\Documents\GitHub\SpoonTools\SpoonTools\obj\Debug\SpoonTools.vbproj.GenerateResource.Cache
+F:\Documents\GitHub\SpoonTools\SpoonTools\obj\Debug\SpoonTools.exe
+F:\Documents\GitHub\SpoonTools\SpoonTools\obj\Debug\SpoonTools.xml
+F:\Documents\GitHub\SpoonTools\SpoonTools\obj\Debug\SpoonTools.pdb
+F:\Documents\GitHub\SpoonTools\SpoonTools\obj\Debug\SpoonTools.vbprojResolveAssemblyReference.cache
