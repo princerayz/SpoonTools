@@ -1,6 +1,6 @@
 # SpoonTools
 
-A Tools For [Spoon](https://spooncast.net), to Increase Tap Love, Fans, Viewers Of Fans, Report, and etc.
+A Tools For [Spoon](https://spooncast.net), to Increase Tap Love, Fans, Listener Of Cast, Report, and etc.
 
 This Tools required Authentication ID to send TAP LOVE, Fans, Report.
 
