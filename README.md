@@ -25,7 +25,7 @@ Newtonsoft.Json
 > Application Thread Handler.
 
 ## Instruction To Add Server
-```
+```vbnet
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
         If ComboBox1.SelectedIndex = 0 Then
             Server = "https://api.spooncast.net"
@@ -49,7 +49,7 @@ Spoon Vietnam
 
 ## Instruction To Add Type
 
-```NET
+```vbnet
         If ComboBox2.SelectedIndex = 0 Then
             LType = "/casts/"
         ElseIf ComboBox2.SelectedIndex = 1 Then
@@ -68,7 +68,7 @@ Spoon Vietnam
 
 ## Instruction To Change User / Profile Editor
 If You Don't want to change Profile Pictures of List BOT / Users, simply comment at this part
-```NET
+```vbnet
 dictData.Add("profile_key", "profiles/2/g3PBq2wSZLz4MV/d08b5331-3bab-4439-9f65-2de05c45ec52.jpg")
 ```
 
