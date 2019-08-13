@@ -2,7 +2,8 @@
 
 A Tools For [Spoon](https://spooncast.net), to Increase Tap Love, Fans, Viewers Of Fans, Report, and etc.
 
-This Tools using Authentiaction ID to send TAP LOVE, Fans, Report
+This Tools required Authentication ID to send TAP LOVE, Fans, Report.
+
 ## Installation
 
 Download Repository [SpoonTools](https://github.com/princerayz/SpoonTools.git) And Open With Visual Studio
