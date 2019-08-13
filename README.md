@@ -20,7 +20,7 @@ Download Repository [SpoonTools](https://github.com/princerayz/SpoonTools.git) A
 ## Features
 - Send Tap Love For LIVE Stream, Cast.
 - Report LIVE Stream, Cast, User.
-- Increase Cast Listener (1 Listener = 3x Listener Spoon *NO NEED AUTH ID, JUST INPUT CAST ID*)
+- Increase Cast Listener (1 Listener = 3x Listener Spoon **NO NEED AUTH ID, JUST INPUT CAST ID**)
 - Auto Fans User
 - Batch Load and Get Authentication ID.
 - Profile Editor, Name, Profile Pictures, and Password Change.
