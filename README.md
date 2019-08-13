@@ -9,11 +9,9 @@ Download Repository [SpoonTools](https://github.com/princerayz/SpoonTools.git) A
 
 ## Requirements
 
-```bash
-NET Framework 4.5
-Microsoft.Net.Http
-Newtonsoft.Json
-```
+- NET Framework 4.5
+- Microsoft.Net.Http
+- Newtonsoft.Json
 
 ## Features
 > Send Tap Love For LIVE Stream, Cast.<br>
@@ -40,12 +38,11 @@ Newtonsoft.Json
 ```
 
 ### Currently Supported Server [API]
-```
-Spoon Indonesia
-Spoon Korea
-Spoon Japanese
-Spoon Vietnam
-```
+- Spoon Indonesia
+- Spoon Korea
+- Spoon Japanese
+- Spoon Vietnam
+
 
 ## Instruction To Add Type
 
