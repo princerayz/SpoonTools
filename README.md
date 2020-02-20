@@ -4,7 +4,7 @@ A Tools For [Spoon](https://spooncast.net), to Increase Tap Love, Fans, Listener
 
 This Tools required Authentication ID to send TAP LOVE, Fans, Report.
 
-### ScreenShoots - LATEST ersion
+### ScreenShoots - LATEST Version
 ![Spoon Tools 1](https://raw.githubusercontent.com/princerayz/SpoonTools/master/ScreenShoots/PictsLatest1.jpg)
 ![Spoon Tools 2](https://raw.githubusercontent.com/princerayz/SpoonTools/master/ScreenShoots/PictsLatest2.jpg)
 ![Spoon Tools 3](https://raw.githubusercontent.com/princerayz/SpoonTools/master/ScreenShoots/PictsLatest3.jpg)
