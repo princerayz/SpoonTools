@@ -9,7 +9,7 @@ This Tools required Authentication ID to send TAP LOVE, Fans, Report.
 ![Spoon Tools 2](https://raw.githubusercontent.com/princerayz/SpoonTools/master/ScreenShoots/PictsLatest2.jpg)
 ![Spoon Tools 3](https://raw.githubusercontent.com/princerayz/SpoonTools/master/ScreenShoots/PictsLatest3.jpg)
 
-### ScreenShoots - OLD ersion
+### ScreenShoots - OLD Version
 ![Spoon Tools](https://raw.githubusercontent.com/princerayz/SpoonTools/master/ScreenShoots/Picts.jpg)
 
 ## Installation
