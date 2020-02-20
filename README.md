@@ -4,7 +4,12 @@ A Tools For [Spoon](https://spooncast.net), to Increase Tap Love, Fans, Listener
 
 This Tools required Authentication ID to send TAP LOVE, Fans, Report.
 
-### ScreenShoots
+### ScreenShoots - LATEST ersion
+![Spoon Tools 1](https://raw.githubusercontent.com/princerayz/SpoonTools/master/ScreenShoots/PictsLatest1.jpg)
+![Spoon Tools 2](https://raw.githubusercontent.com/princerayz/SpoonTools/master/ScreenShoots/PictsLatest2.jpg)
+![Spoon Tools 3](https://raw.githubusercontent.com/princerayz/SpoonTools/master/ScreenShoots/PictsLatest3.jpg)
+
+### ScreenShoots - OLD ersion
 ![Spoon Tools](https://raw.githubusercontent.com/princerayz/SpoonTools/master/ScreenShoots/Picts.jpg)
 
 ## Installation
@@ -19,9 +24,11 @@ Download Repository [SpoonTools](https://github.com/princerayz/SpoonTools.git) A
 
 ## Features
 - Send Tap Love For LIVE Stream, Cast.
+- Increase Live Listener (BOT Listener) For Live Stream.
 - Report LIVE Stream, Cast, User.
-- Increase Cast Listener (1 Listener = 3x Listener Spoon **NO NEED AUTH ID, JUST INPUT CAST ID**)
-- Auto Fans User
+- Increase Cast Listener (1 Listener = 3x Listener Spoon **NO NEED AUTH ID, JUST INPUT CAST ID**).
+- Auto Fans User.
+- Send Impression to User.
 - Batch Load and Get Authentication ID.
 - Profile Editor, Name, Profile Pictures, and Password Change.
 - Application Thread Handler.
@@ -37,6 +44,10 @@ Download Repository [SpoonTools](https://github.com/princerayz/SpoonTools.git) A
             Server = "https://jp-api.spooncast.net"
         ElseIf ComboBox1.SelectedIndex = 3 Then
             Server = "https://vn-api.spooncast.net"
+        ElseIf ComboBox1.SelectedIndex = 4 Then
+            Server = "https://ar-api.spooncast.net"
+        ElseIf ComboBox1.SelectedIndex = 5 Then
+            Server = "https://us-api.spooncast.net"
         End If
     End Sub
 ```
@@ -46,6 +57,8 @@ Download Repository [SpoonTools](https://github.com/princerayz/SpoonTools.git) A
 - Spoon Korea
 - Spoon Japanese
 - Spoon Vietnam
+- Spoon Arab
+- Spoon USA
 
 
 ## Instruction To Add Type

@@ -6,6 +6,8 @@ Imports System.IO
 Imports System.Text
 
 Public Class Form1
+
+    Public UserAgent As String = "AppleWebKit/537.36 Mozilla"
     Dim selection As Rectangle
     Dim selectionColour As Color = Color.Black
     Dim Server As String = "https://id-api.spooncast.net"
@@ -22,6 +24,7 @@ Public Class Form1
         PictureBox3.Parent = PictureBox1
         ComboBox1.SelectedIndex = 1
         ComboBox2.SelectedIndex = 1
+        Impression.SelectedIndex = 0
     End Sub
 
     Private Sub TextBox2_TextChanged(sender As Object, e As EventArgs) Handles TextBox2.TextChanged
@@ -51,14 +54,26 @@ Public Class Form1
         For Each strtoken As String In ListBox1.Items
             Try
                 Dim WC As New System.Net.WebClient
-                WC.Headers.Add("user-agent", "MOZILLA 5.0")
+                WC.Headers.Add("user-agent", UserAgent)
                 WC.Headers.Add("Authorization", "Token " & strtoken)
 
                 Dim reqparam As New Specialized.NameValueCollection
                 reqparam.Add("cv", "heimdallr")
+
+                Dim responsebytesJOIN = WC.UploadValues(Server + LType + TextBox1.Text + "/join/", "POST", reqparam) '
+                Dim responsebodyJOIN = (New Text.UTF8Encoding).GetString(responsebytesJOIN)
+
                 Dim responsebytes = WC.UploadValues(Server + LType + TextBox1.Text + "/like/", "POST", reqparam) '
                 Dim responsebody = (New Text.UTF8Encoding).GetString(responsebytes)
+
+                If (AutoLeaveCheck.Checked) Then
+                    Thread.Sleep(10)
+                    Dim responsebytesLeave = WC.UploadValues(Server + LType + TextBox1.Text + "/leave/", "POST", reqparam) '
+                    Dim responsebodyLeave = (New Text.UTF8Encoding).GetString(responsebytesLeave)
+                End If
+
                 TextBox2.AppendText("SENDLOVE::SUCCESS [" & CurTotal & "]" & vbNewLine)
+                Thread.Sleep(50)
                 If (CurTotal Mod 50 = 0) Then
                     TextBox2.AppendText("SENDLOVE::REST FOR 3 SECONDS" & vbNewLine)
                     Thread.Sleep(3000)
@@ -147,7 +162,7 @@ Public Class Form1
         For Each strtoken As String In ListBox1.Items
             Try
                 Dim WC As New System.Net.WebClient
-                WC.Headers.Add("user-agent", "MOZILLA 5.0")
+                WC.Headers.Add("user-agent", UserAgent)
                 WC.Headers.Add("Authorization", "Token " & strtoken)
 
                 Dim reqparam As New Specialized.NameValueCollection
@@ -241,7 +256,7 @@ Public Class Form1
             Try
                 Dim reqparam() As Byte
                 Dim WC As New System.Net.WebClient
-                WC.Headers.Add("user-agent", "Mozilla/5.0")
+                WC.Headers.Add("user-agent", UserAgent)
                 WC.Headers.Add("content-type", "application/json")
                 Dim dictData As New Dictionary(Of String, Object)
                 dictData.Add("sns_type", "phone")
@@ -265,7 +280,7 @@ Public Class Form1
                 'ListBox3.Items.Add(SpoonUserStruct.results(0).token)
                 Label15.Text = "Total Bot's : " & Convert.ToString(ListBox1.Items.Count)
             Catch ex As Exception
-                TextBox2.AppendText("BOTADD::ERROR = " & ex.Message & " FAIL " & vbNewLine)
+                TextBox2.AppendText("BOTADD::ERROR = [" & words(0) & "] " & ex.Message & " FAIL " & vbNewLine)
             End Try
 
         Next
@@ -323,9 +338,6 @@ Public Class Form1
             MsgBox("No BOT Provided", MsgBoxStyle.Critical, "GET MEMBER AUTH")
         End If
     End Sub
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        MsgBox("Copyright (C) 2019 Prince Ray - Bored Edition", MsgBoxStyle.Information, "About")
-    End Sub
     Dim SReportThread As New Thread(AddressOf SpamReportHere)
 
     Public Sub SpamReportHere()
@@ -351,15 +363,32 @@ Public Class Form1
             Try
                 Dim reqparam() As Byte
                 Dim WC As New System.Net.WebClient
-                WC.Headers.Add("user-agent", "MOZILLA 5.0")
+
+                WC.Headers.Add("user-agent", UserAgent)
                 WC.Headers.Add("Authorization", "Token " & strtoken)
                 WC.Headers.Add("content-type", "application/json;charset=utf-8")
-
                 Dim dictData As New Dictionary(Of String, Object)
                 dictData.Add("report_type", "1")
                 reqparam = Encoding.Default.GetBytes(JsonConvert.SerializeObject(dictData, Formatting.Indented))
+
+
+                ''JoinLeave
+                Dim WCJL As New System.Net.WebClient
+                WCJL.Headers.Add("user-agent", UserAgent)
+                WCJL.Headers.Add("Authorization", "Token " & strtoken)
+                Dim WCJLParam As New Specialized.NameValueCollection
+                WCJLParam.Add("cv", "heimdallr")
+
+                Dim responsebytesJoin = WCJL.UploadValues(Server + LType + TextBox1.Text + "/join/", "POST", WCJLParam) '
+                Dim responsebodyJoin = (New Text.UTF8Encoding).GetString(responsebytesJoin)
+
                 Dim responsebytes = WC.UploadData(Server + LType + TextBox1.Text + "/report/", "POST", reqparam) '
                 Dim responsebody = (New Text.UTF8Encoding).GetString(responsebytes)
+
+                Thread.Sleep(10)
+                Dim responsebytesLeave = WCJL.UploadValues(Server + LType + TextBox1.Text + "/leave/", "POST", WCJLParam) '
+                Dim responsebodyLeave = (New Text.UTF8Encoding).GetString(responsebytesLeave)
+
                 TextBox2.AppendText("SPAMREPORT::SUCCESS [" & CurTotal & "]" & vbNewLine)
                 If (CurTotal Mod 50 = 0) Then
                     TextBox2.AppendText("SPAMREPORT::REST FOR 3 SECONDS" & vbNewLine)
@@ -443,7 +472,7 @@ Public Class Form1
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
         If (ListBox1.SelectedItem Is Nothing) Then
-            MsgBox("Please Select BOT before Remove", MsgBoxStyle.Exclamation, "Failure to Remove BOT")
+            MsgBox("Please Select BOT !", MsgBoxStyle.Exclamation, "Failure to Remove BOT")
         Else
             If (MessageBox.Show("Are You Sure Want To Remove Selected BOT ?", "Remove BOT", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes) Then
                 ListBox1.Items.RemoveAt(ListBox1.SelectedIndex)
@@ -458,7 +487,7 @@ Public Class Form1
         Else
             Try
                 Dim WC As New System.Net.WebClient
-                WC.Headers.Add("user-agent", "Mozilla/5.0")
+                WC.Headers.Add("user-agent", UserAgent)
 
                 Dim reqparam As New Specialized.NameValueCollection
                 reqparam.Add("cv", "heimdallr")
@@ -577,20 +606,29 @@ Public Class Form1
     End Sub
 
     Private Sub ListBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox1.SelectedIndexChanged
-        Button6.Enabled = True
 
-
+        If ListBox1.Items.Count > 0 Then
+            Button5.Enabled = True
+            Button6.Enabled = True
+        Else
+            Button5.Enabled = False
+            Button6.Enabled = False
+        End If
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
-        Dim userMsg As String
-        userMsg = InputBox("Format Input : AuthorizationID Token", "Add New BOT", ListBox1.Items(ListBox1.SelectedIndex))
-        If userMsg <> "" Then
-            MsgBox("User Successfully Changed", MsgBoxStyle.Information, "Edit BOT Success")
-            ListBox1.Items(ListBox1.SelectedIndex) = userMsg
-            Button6.Enabled = False
+        If (ListBox1.SelectedItem Is Nothing) Then
+            MsgBox("Please Select BOT!", MsgBoxStyle.Exclamation, "Failure to Edit BOT")
         Else
-            MsgBox("Wrong Auth ID", MsgBoxStyle.Critical, "Edit BOT Failure")
+            Dim userMsg As String
+            userMsg = InputBox("Format Input : AuthorizationID Token", "Add New BOT", ListBox1.Items(ListBox1.SelectedIndex))
+            If userMsg <> "" Then
+                MsgBox("User Successfully Changed", MsgBoxStyle.Information, "Edit BOT Success")
+                ListBox1.Items(ListBox1.SelectedIndex) = userMsg
+                Button6.Enabled = False
+            Else
+                MsgBox("Wrong Auth ID", MsgBoxStyle.Critical, "Edit BOT Failure")
+            End If
         End If
     End Sub
 
@@ -603,6 +641,10 @@ Public Class Form1
             Server = "https://jp-api.spooncast.net"
         ElseIf ComboBox1.SelectedIndex = 3 Then
             Server = "https://vn-api.spooncast.net"
+        ElseIf ComboBox1.SelectedIndex = 4 Then
+            Server = "https://ar-api.spooncast.net"
+        ElseIf ComboBox1.SelectedIndex = 5 Then
+            Server = "https://us-api.spooncast.net"
         End If
     End Sub
 
@@ -665,13 +707,14 @@ Public Class Form1
         BotNewPassword.Enabled = False
         BotNamer.Enabled = False
         Dim Brebek As Integer = 1
+        Dim PictsOfBOT() As String = {"bg/1.png"}
         For Each strtoken As String In ListBox2.Items
             Dim words As String() = strtoken.Split(New Char() {","c})
 
             Try
                 Dim reqparam() As Byte
                 Dim WC As New System.Net.WebClient
-                WC.Headers.Add("user-agent", "Mozilla/5.0")
+                WC.Headers.Add("user-agent", UserAgent)
                 WC.Headers.Add("Authorization", "Token " & words(1))
                 WC.Headers.Add("content-type", "application/json;charset=utf-8")
                 Dim CHangeType As String = "/users/"
@@ -680,12 +723,13 @@ Public Class Form1
                     dictData.Add("new_password", BotNewPassword.Text)
                     CHangeType = "/password/"
                 Else
-                    dictData.Add("profile_key", "profiles/2/g3PBq2wSZLz4MV/d08b5331-3bab-4439-9f65-2de05c45ec52.jpg")
+                    If (BotChangePictCheck.Checked) Then
+                        dictData.Add("profile_key", BotNewPict.Text)
+                    End If
                     If (BotAddNumberCheck.Checked) Then
                         dictData.Add("nickname", BotNamer.Text & " " & BotCounter.Value)
                         BotCounter.Value += 1
-                    Else
-                        dictData.Add("nickname", BotNamer.Text & " ")
+
                     End If
                     CHangeType = "/users/" & words(0)
                 End If
@@ -694,11 +738,11 @@ Public Class Form1
                 'Dim responsebytes = WC.UploadValues(Server + LType + TextBox1.Text, "POST", reqparam) '+ "/like/"
                 Dim responsebody = (New Text.UTF8Encoding).GetString(responsebytes)
                 'TextBox2.Text = responsebody
-                TextBox2.Text = "BOTCHANGER::SUCCESS " & words(0) & " [" & Brebek & "]"
+                TextBox2.AppendText("BOTCHANGER::SUCCESS " & words(0) & " [" & Brebek & "]" & vbNewLine)
                 Brebek += 1
                 Dim jstr As String = responsebody
             Catch ex As Exception
-                TextBox2.AppendText("BOTCHANGER::ERROR = " & ex.Message & " FAIL " & vbNewLine)
+                TextBox2.AppendText("BOTCHANGER::ERROR = " & words(0) & " " & ex.Message & " FAIL " & vbNewLine)
             End Try
 
         Next
@@ -736,8 +780,6 @@ Public Class Form1
                 TextBox2.Clear()
                 Button13.Text = "STOP"
                 PBar.Maximum = ListBox2.Items.Count
-                TextBox2.Clear()
-
                 CUSThread.Start()
             Else
                 CUSThread.Abort()
@@ -847,21 +889,30 @@ Public Class Form1
     End Sub
 
     Private Sub ListBox2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox2.SelectedIndexChanged
-        BotChangerEdit.Enabled = True
-        TextBox1.Text = ListBox2.Items(ListBox2.SelectedIndex).Split(New Char() {","c})(0)
-        ComboBox2.SelectedIndex = 2
+        If ListBox2.Items.Count > 0 Then
+            BotChangerEdit.Enabled = True
+            BotChangerDelete.Enabled = True
+        Else
+            BotChangerEdit.Enabled = False
+            BotChangerDelete.Enabled = False
+        End If
     End Sub
 
     Private Sub BotChangerEdit_Click(sender As Object, e As EventArgs) Handles BotChangerEdit.Click
-        Dim userMsg As String
-        userMsg = InputBox("Format Input : IDUser,AuthorizationID Token", "BOTChanger::EDIT", ListBox2.Items(ListBox2.SelectedIndex))
-        If userMsg <> "" Then
-            MsgBox("User Successfully Changed", MsgBoxStyle.Information, "Edit BOT Success")
-            ListBox2.Items(ListBox2.SelectedIndex) = userMsg
-            BotChangerEdit.Enabled = False
+        If (ListBox2.SelectedItem Is Nothing) Then
+            MsgBox("Please Select BOT!", MsgBoxStyle.Exclamation, "Failure to Edit BOT")
         Else
-            MsgBox("Wrong Auth ID", MsgBoxStyle.Critical, "Edit BOT Failure")
+            Dim userMsg As String
+            userMsg = InputBox("Format Input : IDUser,AuthorizationID Token", "BOTChanger::EDIT", ListBox2.Items(ListBox2.SelectedIndex))
+            If userMsg <> "" Then
+                MsgBox("User Successfully Changed", MsgBoxStyle.Information, "Edit BOT Success")
+                ListBox2.Items(ListBox2.SelectedIndex) = userMsg
+                BotChangerEdit.Enabled = False
+            Else
+                MsgBox("Wrong Auth ID", MsgBoxStyle.Critical, "Edit BOT Failure")
+            End If
         End If
+
     End Sub
     Dim SListThread As New Thread(AddressOf SpamListenerHere)
 
@@ -889,7 +940,7 @@ Public Class Form1
         For Value As Integer = 1 To numListener.Value
             Try
                 Dim WC As New System.Net.WebClient
-                WC.Headers.Add("user-agent", "Mozilla/5.0")
+                WC.Headers.Add("user-agent", UserAgent)
 
                 Dim reqparam As New Specialized.NameValueCollection
                 'reqparam.Add("cv", "heimdallr")
@@ -962,4 +1013,123 @@ Public Class Form1
         End If
     End Sub
 
+    Private Sub BotAddNumberCheck_CheckedChanged(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub TabPage2_Click(sender As Object, e As EventArgs) Handles TabPage2.Click
+
+    End Sub
+
+    Private Sub TabPage1_Click(sender As Object, e As EventArgs) Handles TabPage1.Click
+
+    End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        TextBox2.Clear()
+    End Sub
+
+    Private Sub GroupBox2_Enter(sender As Object, e As EventArgs) Handles GroupBox2.Enter
+
+    End Sub
+
+    Dim SIThread As New Thread(AddressOf SendImpression)
+
+    Public Sub SendImpression()
+        CheckForIllegalCrossThreadCalls = False
+        ComboBox1.Enabled = False
+        ComboBox2.Enabled = False
+        Button1.Enabled = False
+        Button2.Enabled = False
+        Button4.Enabled = False
+        Button5.Enabled = False
+        Button6.Enabled = False
+        Button7.Enabled = False
+        Button8.Enabled = False
+        Button9.Enabled = False
+        Button10.Enabled = False
+        Button11.Enabled = False
+        Button12.Enabled = False
+        Button13.Enabled = False
+        Button14.Enabled = False
+        Button15.Enabled = False
+        Dim CurTotal As Integer = 1
+        For Each strtoken As String In ListBox1.Items
+            Try
+                Dim reqparam() As Byte
+                Dim WC As New System.Net.WebClient
+                WC.Headers.Add("user-agent", UserAgent)
+                WC.Headers.Add("Authorization", "Token " & strtoken)
+                WC.Headers.Add("content-type", "application/json;charset=utf-8")
+
+                Dim dictData As New Dictionary(Of String, Object)
+                dictData.Add("new_impression_ids", Impression.SelectedIndex + 1) ' Not Start from 0
+                reqparam = Encoding.Default.GetBytes(JsonConvert.SerializeObject(dictData, Formatting.Indented))
+                Dim responsebytes = WC.UploadData(Server + LType + TextBox1.Text + "/impression/", "POST", reqparam) '
+                Dim responsebody = (New Text.UTF8Encoding).GetString(responsebytes)
+                TextBox2.AppendText("IMPRESSION::SUCCESS [" & CurTotal & "]" & vbNewLine)
+                PBar.Increment(1)
+                CurTotal += 1
+            Catch ex As Exception
+                TextBox2.AppendText("IMPRESSION::ERROR = " & " FAIL " & strtoken & ex.Message & vbNewLine)
+            End Try
+        Next
+        SIThread = New Thread(AddressOf SendImpression)
+        ComboBox1.Enabled = True
+        ComboBox2.Enabled = True
+        Button1.Enabled = True
+        Button2.Enabled = True
+        Button4.Enabled = True
+        Button5.Enabled = True
+        Button7.Enabled = True
+        Button8.Enabled = True
+        Button9.Enabled = True
+        Button10.Enabled = True
+        Button11.Enabled = True
+        Button12.Enabled = True
+        Button13.Enabled = True
+        Button14.Enabled = True
+        Button15.Enabled = True
+        Button16.Text = "Set"
+        CheckForIllegalCrossThreadCalls = True
+    End Sub
+
+
+    Private Sub Button16_Click(sender As Object, e As EventArgs) Handles Button16.Click
+        If TextBox1.Text = "" Then
+            MsgBox("PLEASE INPUT USER ID", MsgBoxStyle.Critical, "NO USER ID PROVIDED")
+        ElseIf ComboBox2.SelectedIndex <> 2 Then
+            MsgBox("PLEASE SELECT A CORRECT TYPE", MsgBoxStyle.Critical, "SPAM FANS")
+        ElseIf ListBox1.Items.Count > 0 Then
+            If Button16.Text = "Set" Then
+                TextBox2.Clear()
+                Button16.Text = "Stop"
+                PBar.Maximum = ListBox1.Items.Count
+                PBar.Value = 0
+                SIThread.Start()
+            Else
+                SIThread.Abort()
+                SIThread = New Thread(AddressOf SendImpression)
+                Button16.Text = "Set"
+                ComboBox1.Enabled = True
+                ComboBox2.Enabled = True
+                Button1.Enabled = True
+                Button2.Enabled = True
+                Button4.Enabled = True
+                Button5.Enabled = True
+                Button7.Enabled = True
+                Button8.Enabled = True
+                Button9.Enabled = True
+                Button10.Enabled = True
+                Button11.Enabled = True
+                Button12.Enabled = True
+                Button13.Enabled = True
+                Button14.Enabled = True
+                Button15.Enabled = True
+                PBar.Value = 0
+            End If
+        Else
+            MsgBox("No BOT Provided", MsgBoxStyle.Critical, "SPAM FANS")
+        End If
+    End Sub
 End Class
