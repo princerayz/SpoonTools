@@ -7,7 +7,7 @@ Imports System.Text
 
 Public Class Form1
 
-    Public UserAgent As String = "AppleWebKit/537.36 Mozilla"
+    Public UserAgent As String = "Web"
     Dim selection As Rectangle
     Dim selectionColour As Color = Color.Black
     Dim Server As String = "https://id-api.spooncast.net"
@@ -54,23 +54,26 @@ Public Class Form1
         For Each strtoken As String In ListBox1.Items
             Try
                 Dim WC As New System.Net.WebClient
-                WC.Headers.Add("user-agent", UserAgent)
-                WC.Headers.Add("Authorization", "Token " & strtoken)
-
                 Dim reqparam As New Specialized.NameValueCollection
                 reqparam.Add("cv", "heimdallr")
-
-                Dim responsebytesJOIN = WC.UploadValues(Server + LType + TextBox1.Text + "/join/", "POST", reqparam) '
-                Dim responsebodyJOIN = (New Text.UTF8Encoding).GetString(responsebytesJOIN)
-
-                Dim responsebytes = WC.UploadValues(Server + LType + TextBox1.Text + "/like/", "POST", reqparam) '
-                Dim responsebody = (New Text.UTF8Encoding).GetString(responsebytes)
+                Dim TotalTask As Byte = 2
+                Dim LTask As String() = {"/join/", "/like/", "/leave/"}
 
                 If (AutoLeaveCheck.Checked) Then
-                    Thread.Sleep(10)
-                    Dim responsebytesLeave = WC.UploadValues(Server + LType + TextBox1.Text + "/leave/", "POST", reqparam) '
-                    Dim responsebodyLeave = (New Text.UTF8Encoding).GetString(responsebytesLeave)
+                    TotalTask = 3
                 End If
+
+                For MyCurTask As Integer = 1 To TotalTask
+                    WC = New System.Net.WebClient
+                    WC.Headers.Add("user-agent", UserAgent)
+                    WC.Headers.Add("Authorization", "Token " & strtoken)
+                    WC.Headers.Add("Referer", "https://www.spooncast.net/")
+                    If (AutoLeaveCheck.Checked And MyCurTask = 3) Then
+                        Thread.Sleep(10)
+                    End If
+                    Dim responsebytes = WC.UploadValues(Server + LType + TextBox1.Text + LTask(MyCurTask - 1), "POST", reqparam) '
+                    Dim responsebody = (New Text.UTF8Encoding).GetString(responsebytes)
+                Next
 
                 TextBox2.AppendText("SENDLOVE::SUCCESS [" & CurTotal & "]" & vbNewLine)
                 Thread.Sleep(50)
@@ -164,6 +167,7 @@ Public Class Form1
                 Dim WC As New System.Net.WebClient
                 WC.Headers.Add("user-agent", UserAgent)
                 WC.Headers.Add("Authorization", "Token " & strtoken)
+                WC.Headers.Add("Referer", "https://www.spooncast.net/")
 
                 Dim reqparam As New Specialized.NameValueCollection
                 reqparam.Add("cv", "heimdallr")
@@ -258,6 +262,8 @@ Public Class Form1
                 Dim WC As New System.Net.WebClient
                 WC.Headers.Add("user-agent", UserAgent)
                 WC.Headers.Add("content-type", "application/json")
+                WC.Headers.Add("Referer", "https://www.spooncast.net/")
+
                 Dim dictData As New Dictionary(Of String, Object)
                 dictData.Add("sns_type", "phone")
                 dictData.Add("sns_id", words(0))
@@ -367,6 +373,8 @@ Public Class Form1
                 WC.Headers.Add("user-agent", UserAgent)
                 WC.Headers.Add("Authorization", "Token " & strtoken)
                 WC.Headers.Add("content-type", "application/json;charset=utf-8")
+                WC.Headers.Add("Referer", "https://www.spooncast.net/")
+
                 Dim dictData As New Dictionary(Of String, Object)
                 dictData.Add("report_type", "1")
                 reqparam = Encoding.Default.GetBytes(JsonConvert.SerializeObject(dictData, Formatting.Indented))
@@ -376,6 +384,7 @@ Public Class Form1
                 Dim WCJL As New System.Net.WebClient
                 WCJL.Headers.Add("user-agent", UserAgent)
                 WCJL.Headers.Add("Authorization", "Token " & strtoken)
+                WCJL.Headers.Add("Referer", "https://www.spooncast.net/")
                 Dim WCJLParam As New Specialized.NameValueCollection
                 WCJLParam.Add("cv", "heimdallr")
 
@@ -386,6 +395,10 @@ Public Class Form1
                 Dim responsebody = (New Text.UTF8Encoding).GetString(responsebytes)
 
                 Thread.Sleep(10)
+                WCJL = New System.Net.WebClient 'we reset the param, im so lazy to think others, so just force this xD
+                WCJL.Headers.Add("user-agent", UserAgent)
+                WCJL.Headers.Add("Authorization", "Token " & strtoken)
+                WCJL.Headers.Add("Referer", "https://www.spooncast.net/")
                 Dim responsebytesLeave = WCJL.UploadValues(Server + LType + TextBox1.Text + "/leave/", "POST", WCJLParam) '
                 Dim responsebodyLeave = (New Text.UTF8Encoding).GetString(responsebytesLeave)
 
@@ -488,10 +501,11 @@ Public Class Form1
             Try
                 Dim WC As New System.Net.WebClient
                 WC.Headers.Add("user-agent", UserAgent)
-
-                Dim reqparam As New Specialized.NameValueCollection
-                reqparam.Add("cv", "heimdallr")
-                Dim responsebytes = WC.UploadValues(Server + LType + TextBox1.Text, "POST", reqparam) '+ "/like/"
+                WC.Headers.Add("Referer", "https://www.spooncast.net/")
+                'Dim reqparam As New Specialized.NameValueCollection
+                'reqparam.Add("Referer", "https://www.spooncast.net/")
+                Dim responsebytes = WC.DownloadData(Server + LType + TextBox1.Text + "/")
+                'Dim responsebytes = WC.UploadValues(Server + LType + TextBox1.Text, "POST", reqparam) '+ "/like/"
                 Dim responsebody = (New Text.UTF8Encoding).GetString(responsebytes)
                 'TextBox2.Text = responsebody
 
@@ -716,6 +730,7 @@ Public Class Form1
                 Dim WC As New System.Net.WebClient
                 WC.Headers.Add("user-agent", UserAgent)
                 WC.Headers.Add("Authorization", "Token " & words(1))
+                WC.Headers.Add("Referer", "https://www.spooncast.net/")
                 WC.Headers.Add("content-type", "application/json;charset=utf-8")
                 Dim CHangeType As String = "/users/"
                 Dim dictData As New Dictionary(Of String, Object)
@@ -941,6 +956,7 @@ Public Class Form1
             Try
                 Dim WC As New System.Net.WebClient
                 WC.Headers.Add("user-agent", UserAgent)
+                WC.Headers.Add("Referer", "https://www.spooncast.net/")
 
                 Dim reqparam As New Specialized.NameValueCollection
                 'reqparam.Add("cv", "heimdallr")
@@ -1061,6 +1077,7 @@ Public Class Form1
                 WC.Headers.Add("user-agent", UserAgent)
                 WC.Headers.Add("Authorization", "Token " & strtoken)
                 WC.Headers.Add("content-type", "application/json;charset=utf-8")
+                WC.Headers.Add("Referer", "https://www.spooncast.net/")
 
                 Dim dictData As New Dictionary(Of String, Object)
                 dictData.Add("new_impression_ids", Impression.SelectedIndex + 1) ' Not Start from 0
